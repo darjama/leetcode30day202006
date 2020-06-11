@@ -3,7 +3,7 @@ var sortColors = function(nums) {
 let counts = [0,0,0];
   for (let i = 0; i < nums.length; i++) {
     counts[nums[i]]++;
-    if (nums[i] === 0 && counts[1] + counts[2] > 0) {
+    if (nums[i] === 0 && counts[1] + counts[2]) {
        [nums[i], nums[i - counts[1] - counts[2]]] = [nums[i - counts[1]- counts[2]], nums[i]];
       } 
     if (nums[i] === 1 && counts[2]) {
