@@ -9,24 +9,22 @@ var findCheapestPrice = function(n, flights, src, dst, K) {
   let trips = 0;
   let minPrice = Infinity;
   let minPriceDone = Infinity;
-  let results = [];
+  let results = [];  function bfs(list, oldPrice = 0, temp) {
+    for (let key in list) {
+      let newTtl = list[key] + oldPrice;
+      if(Number(key) !== dst && newTtl < minPriceDone) temp.push([key, newTtl])
+      if(Number(key) === dst) minPriceDone = Math.min(minPriceDone, newTtl)
+      minPrice = Math.min (minPrice, newTtl)
+    }
+  }
   while (trips <= K) {
     trips ++;
     let temp = [];
     if (!results.length) {
-      for (let key in nodes[src]) {
-        if(Number(key) !== dst) temp.push([key, nodes[src][key]])
-        if(Number(key) === dst) minPriceDone = Math.min(minPriceDone, nodes[src][key])
-        minPrice = Math.min(minPrice, nodes[src][key])
-      }
+      bfs(nodes[src],0,temp)
     } else {
       results.forEach(a => {
-        for (let key in nodes[a[0]]) {
-          let newTtl = nodes[a[0]][key] + a[1];
-          if(Number(key) !== dst && newTtl < minPriceDone) temp.push([key, newTtl])
-          if(Number(key) === dst) minPriceDone = Math.min(minPriceDone, newTtl)
-          minPrice = Math.min (minPrice, newTtl)
-        }
+        bfs(nodes[a[0]], a[1], temp)
       })
     }
     if (minPrice === minPriceDone && minPrice < Infinity) return minPriceDone;
